@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 
 
 
-class news_article(BaseModel):
+class NewsArticle(BaseModel):
     title: str
     publisher: str
     link: str
@@ -12,7 +12,7 @@ class news_article(BaseModel):
 
 
 
-class financial_metrics(BaseModel):
+class FinancialMetrics(BaseModel):
     ticker: str
     current_price: Optional[float] = None
     trailing_pe: Optional[float] = None
@@ -24,17 +24,17 @@ class financial_metrics(BaseModel):
 
 
 
-class ticker_payload(BaseModel):
-    metrics: financial_metrics
-    news: List[news_article] = Field(default_factory=list)
+class TickerPayload(BaseModel):
+    metrics: FinancialMetrics
+    news: List[NewsArticle] = Field(default_factory=list)
 
 
-def fetch_ticker_data(symbol: str) -> ticker_payload:
+def fetch_ticker_data(symbol: str) -> TickerPayload:
     ticker = yf.Ticker(symbol)
 
     info = ticker.info or {}
 
-    metrics = financial_metrics(
+    metrics = FinancialMetrics(
         ticker=symbol.upper(),
         current_price=info.get("currentPrice") or info.get("regularMarketPrice"),
         trailing_pe=info.get("trailingPE"),
@@ -59,7 +59,7 @@ def fetch_ticker_data(symbol: str) -> ticker_payload:
         
         
         cleaned_news.append(
-            news_article(
+            NewsArticle(
                 title=content.get("title", "No title"),
                 publisher=publisher_name,
                 link=link_url,
@@ -67,7 +67,7 @@ def fetch_ticker_data(symbol: str) -> ticker_payload:
             )
         )
 
-    return ticker_payload(metrics=metrics,news=cleaned_news)
+    return TickerPayload(metrics=metrics,news=cleaned_news)
 
 
 
