@@ -1,4 +1,3 @@
-import os
 from typing import TypedDict, Optional, Dict, Any
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -96,25 +95,38 @@ def chief_arbiter(state: ResearchState) -> dict:
 
 
 # 5. Guardrail Agent (Make sure correct data being accessed)
-
 def evaluator_guardrail(state: ResearchState) -> dict:
-    report = state.get("final_report", "")
-    metrics = state.get("metrics", {})
-    
+    raw_report = state.get("final_report", "")
+
+    # Normalize response.content if returned as a list of text blocks
+    if isinstance(raw_report, list):
+        report = " ".join(
+            part.get("text", str(part)) if isinstance(part, dict) else str(part)
+            for part in raw_report
+        )
+    else:
+        report = str(raw_report or "")
+
     # Deterministic checks
     verdicts = ["STRONG BUY", "BUY", "HOLD", "SELL"]
     has_verdict = any(v in report for v in verdicts)
-    
-    # Checking if the right data was used.
-    mentions_pe = "P/E" in report or "pe" in report.lower()
-    mentions_margin = "margin" in report.lower()
-    
+
+    # Checking if the right data was used
+    report_lower = report.lower()
+    mentions_pe = "p/e" in report_lower or "pe ratio" in report_lower
+    mentions_margin = "margin" in report_lower
+
     passed = has_verdict and (mentions_pe or mentions_margin)
-    notes = "Passed audit: explicit rating and core metrics verified." if passed else "Flagged: Missing structured metrics citation."
+    notes = (
+        "Passed audit: explicit rating and core metrics verified."
+        if passed
+        else "Flagged: Missing structured metrics citation."
+    )
 
     return {
+        "final_report": report,
         "passed_guardrail": passed,
-        "audit_notes": notes
+        "audit_notes": notes,
     }
 
 # 6. Build and Compile the Graph
