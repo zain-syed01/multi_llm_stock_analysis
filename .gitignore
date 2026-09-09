@@ -6,3 +6,5 @@ chroma_data/
 
 
 __pycache__/
+
+research_cache.db/
