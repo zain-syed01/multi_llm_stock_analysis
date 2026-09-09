@@ -1,0 +1,21 @@
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Environments
+env/
+venv/
+.venv/
+
+# Secrets & Configs
+.env
+.git
+.gitignore
+
+# App folders & local persistent data
+frontend/
+chroma_data/
+research_cache.db

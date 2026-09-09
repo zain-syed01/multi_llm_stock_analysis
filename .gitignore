@@ -1,10 +1,21 @@
+# Environments
 venv/
+.venv/
+env/
 
+# Secrets
 .env
 
+# Local Storage & Caches
 chroma_data/
+research_cache.db
 
-
+# Python Bytecode
 __pycache__/
+*.py[cod]
+*$py.class
 
-research_cache.db/
+# OS / Editor noise
+.DS_Store
+.vscode/
+.idea/
