@@ -8,3 +8,5 @@ langchain-google-genai
 python-dotenv
 yfinance
 pydantic
+pytest
+httpx
