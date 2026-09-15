@@ -74,9 +74,11 @@ def chief_arbiter(state: ResearchState) -> dict:
     ticker = state["ticker"]
     fund_view = state.get("fundamental_analysis", "")
     sent_view = state.get("sentiment_analysis", "")
+    current_date = datetime.now().strftime("%B %d, %Y")
+    
 
     prompt = f"""
-    You are the Chief Investment Officer. Synthesize the findings from your two analysts on {ticker}:
+    You are the Chief Investment Officer. Today's date is {current_date}. Synthesize the findings from your two analysts on {ticker}:
 
     [FUNDAMENTAL ANALYSIS]
     {fund_view}
