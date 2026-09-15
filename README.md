@@ -64,7 +64,7 @@ Repeating a ticker lookup pulls directly from Neon PostgreSQL, bypassing LLM inf
 * A PostgreSQL Database connection string (Neon or local)
 
 ### 1. Clone Repository
-``bash
+```bash
 git clone [https://github.com/zain-syed01/multi_llm_stock_analysis.git](https://github.com/zain-syed01/multi_llm_stock_analysis.git)
 cd multi_llm_stock_analysis
 
@@ -76,7 +76,7 @@ GOOGLE_API_KEY=your_gemini_api_key_here
 DATABASE_URL=postgresql://user:password@ep-xyz.neon.tech/neondb?sslmode=require
 
 ### 3. Run with Docker Compose (Recommended)
-``bash
+```bash
 docker compose up --build
 
 
