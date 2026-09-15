@@ -70,7 +70,9 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-mono text-zinc-400">API: 8000</span>
+              <span className="text-xs font-mono text-zinc-400">
+                {process.env.NEXT_PUBLIC_API_URL ? "API: LIVE" : "API: 8000"}
+              </span>
             </div>
           </div>
         </header>
