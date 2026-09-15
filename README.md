@@ -154,6 +154,7 @@ npm install
 npm run dev
 ```
 ### Project Structure
+```text
 .
 ├── .github/workflows/
 │   └── ci.yml             # GitHub Actions: Pytest & Docker build checks
