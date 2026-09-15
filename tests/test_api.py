@@ -2,9 +2,14 @@ import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import patch
 from main import app
+from database import create_db_and_tables
 from ingest import FinancialMetrics, TickerPayload
 from graph import evaluator_guardrail, ResearchState
 
+#Have to create tables for sql test database
+@pytest.fixture(autouse=True)
+def setup_test_db():
+    create_db_and_tables()
 
 client = TestClient(app)
 
