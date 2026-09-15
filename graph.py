@@ -2,6 +2,7 @@ from typing import TypedDict, Optional, Dict, Any
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.graph import StateGraph, START, END
+from datetime import datetime
 
 from store import query_news
 
