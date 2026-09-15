@@ -7,6 +7,7 @@ from database import create_db_and_tables, get_session, AnalysisRecord
 from ingest import fetch_ticker_data
 from store import store_news
 from graph import research_graph, ResearchState
+from fastapi.middleware.cors import CORSMiddleware
 
 @asynccontextmanager
 
@@ -22,6 +23,13 @@ app = FastAPI(
     description="Multi-agent financial research system powered by LangGraph, ChromaDB, and Google Gemini.",
     version="1.0.0",
     lifespan=lifespan,
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https://.*\.vercel\.app|http://localhost:3000",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

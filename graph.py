@@ -9,7 +9,7 @@ load_dotenv()
 
 # Initialize Gemini model
 llm = ChatGoogleGenerativeAI(
-    model="gemini-3.6-flash",
+    model="gemini-3.5-flash-lite",
 )
 
 # Making the Shared Graph State
@@ -137,10 +137,15 @@ workflow.add_node("sentiment_analyst", sentiment_analyst)
 workflow.add_node("chief_arbiter", chief_arbiter)
 workflow.add_node("evaluator_guardrail", evaluator_guardrail)
 
-# Edge wiring: Run both analysts first, then synthesize
+# Edge wiring: Run both analysts at same time
 workflow.add_edge(START, "fundamental_analyst")
-workflow.add_edge("fundamental_analyst", "sentiment_analyst")
+workflow.add_edge(START, "sentiment_analyst")
+
+#Both anylysts feed into the chief arbiter
+workflow.add_edge("fundamental_analyst", "chief_arbiter")
 workflow.add_edge("sentiment_analyst", "chief_arbiter")
+
+# Final Steps
 workflow.add_edge("chief_arbiter", "evaluator_guardrail")
 workflow.add_edge("evaluator_guardrail", END)
 

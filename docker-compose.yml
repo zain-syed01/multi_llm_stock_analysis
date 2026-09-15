@@ -12,3 +12,16 @@ services:
       # Mount vector DB so indexed articles persist on host across container restarts
       - ./chroma_data:/app/chroma_data
     restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: equity-research-ui
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    restart: unless-stopped
