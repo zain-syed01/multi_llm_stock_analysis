@@ -44,6 +44,59 @@ Repeating a ticker lookup pulls directly from Neon PostgreSQL, bypassing LLM inf
 ---
 
 ## System Architecture
+## System Architecture
+
+```text
+                      ┌─────────────────────────────────┐
+                      │    Next.js Terminal Frontend    │
+                      └────────────────┬────────────────┘
+                                       │ POST /api/v1/research/{ticker}
+                                       ▼
+                      ┌─────────────────────────────────┐
+                      │         FastAPI Backend         │
+                      └────────┬───────────────┬────────┘
+             Cache Hit (<24h)  │               │ Cache Miss
+                               ▼               ▼
+                    ┌──────────────────┐  ┌───────────────────────────┐
+                    │ Neon PostgreSQL  │  │ Ingester (yfinance + HTTP)│
+                    └──────────────────┘  └─────────────┬─────────────┘
+                                                        │
+                                   ┌────────────────────┴────────────────────┐
+                                   ▼                                         ▼
+                        ┌─────────────────────┐                   ┌─────────────────────┐
+                        │  Financial Metrics  │                   │ ChromaDB Vector DB  │
+                        │ (P/E, Margins, FCF) │                   │  (Embedded News)    │
+                        └──────────┬──────────┘                   └──────────┬──────────┘
+                                   │                                         │
+                                   └────────────────────┬────────────────────┘
+                                                        │
+                                                        ▼
+                                       ┌─────────────────────────────────┐
+                                       │     LangGraph State Graph       │
+                                       │                                 │
+                                       │  ┌───────────────────────────┐  │
+                                       ├─►│    fundamental_analyst    ├──┤
+                                       │  └───────────────────────────┘  │
+                                       │                                 │
+                                       │  ┌───────────────────────────┐  │
+                                       ├─►│     sentiment_analyst     ├──┤
+                                       │  │     (ChromaDB context)    │  │
+                                       │  └───────────────────────────┘  │
+                                       │                │                │
+                                       │                ▼                │
+                                       │  ┌───────────────────────────┐  │
+                                       │  │       chief_arbiter       │  │
+                                       │  │    (Synthesizes Memo)     │  │
+                                       │  └─────────────┬─────────────┘  │
+                                       │                ▼                │
+                                       │  ┌───────────────────────────┐  │
+                                       │  │    evaluator_guardrail    │  │
+                                       │  │   (Deterministic Audit)   │  │
+                                       │  └─────────────┬─────────────┘  │
+                                       └────────────────┼────────────────┘
+                                                        │
+                                                        ▼
+                                             Persist to Neon Cache
 
 * **Frontend Layer:** Hosted on Vercel, providing an interactive terminal interface, dynamic API status monitoring, and real-time report rendering.
 * **API Gateway:** Hosted on Render using a Docker container, providing FastAPI routes for research generation and cache verification.
