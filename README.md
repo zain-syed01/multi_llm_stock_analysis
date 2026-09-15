@@ -44,9 +44,8 @@ Repeating a ticker lookup pulls directly from Neon PostgreSQL, bypassing LLM inf
 ---
 
 ## System Architecture
-## System Architecture
 
-```text
+```
                       ┌─────────────────────────────────┐
                       │    Next.js Terminal Frontend    │
                       └────────────────┬────────────────┘
@@ -97,6 +96,7 @@ Repeating a ticker lookup pulls directly from Neon PostgreSQL, bypassing LLM inf
                                                         │
                                                         ▼
                                              Persist to Neon Cache
+```
 
 * **Frontend Layer:** Hosted on Vercel, providing an interactive terminal interface, dynamic API status monitoring, and real-time report rendering.
 * **API Gateway:** Hosted on Render using a Docker container, providing FastAPI routes for research generation and cache verification.
@@ -120,14 +120,15 @@ Repeating a ticker lookup pulls directly from Neon PostgreSQL, bypassing LLM inf
 ```bash
 git clone [https://github.com/zain-syed01/multi_llm_stock_analysis.git](https://github.com/zain-syed01/multi_llm_stock_analysis.git)
 cd multi_llm_stock_analysis
-
+```
 
 ### 2. Environment Variables
+```
 Create a `.env` file in the root directory:
 
 GOOGLE_API_KEY=your_gemini_api_key_here
 DATABASE_URL=postgresql://user:password@ep-xyz.neon.tech/neondb?sslmode=require
-
+```
 ### 3. Run with Docker Compose (Recommended)
 ```bash
 docker compose up --build
@@ -137,8 +138,9 @@ docker compose up --build
 
 * FastAPI Docs: http://localhost:8000/docs
 
-
+```
 ### 4. Run Manually
+```
 Start the FastAPI backend:
 
 python3 -m venv venv
@@ -150,7 +152,7 @@ In a separate terminal, start the Next.js frontend:
 cd frontend
 npm install
 npm run dev
-
+```
 ### Project Structure
 .
 ├── .github/workflows/
