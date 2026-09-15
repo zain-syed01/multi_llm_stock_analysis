@@ -94,7 +94,7 @@ Repeating a ticker lookup pulls directly from Neon PostgreSQL, bypassing LLM inf
 
 ---
 
-## Tech Stack
+# Tech Stack
 
 | Layer | Technologies |
 | :--- | :--- |
@@ -131,7 +131,7 @@ Repeating a ticker lookup pulls directly from Neon PostgreSQL, bypassing LLM inf
 
 ---
 
-## Local Setup & Development
+# Local Setup & Development
 
 ### 1. Prerequisites
 * Docker & Docker Compose installed
